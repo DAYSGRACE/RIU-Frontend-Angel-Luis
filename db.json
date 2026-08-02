@@ -1,16 +1,4 @@
 {
-  "heroes": [
-    {
-      "id": 1,
-      "name": "Superman",
-      "powers": [
-        {
-          "name": "Laser Vision",
-          "description": "See through walls with laser beams",
-          "level": "Advanced",
-          "effect": "Increases visibility through walls"
-        }
-      ]
-    }
-  ]
+  "heroes": [],
+  "$schema": "./node_modules/json-server/schema.json"
 }
