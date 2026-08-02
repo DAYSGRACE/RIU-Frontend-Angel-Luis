@@ -1,0 +1,16 @@
+<section class="flex flex-col gap-3">
+
+  <hero-filter-input
+    (query)="queryToSearch.set($event)"
+    [debounceTime]="500"
+    [labelInput]="'Nombre del Héroe'"
+  />
+
+
+  <hero-table
+    [columns]="columnsTable"
+    [currentQuery]="this.queryToSearch()"
+    [data]="heroListResource.hasValue() ? heroListResource.value().data : []"
+    [isLoading]="heroListResource.isLoading()"
+  />
+</section>

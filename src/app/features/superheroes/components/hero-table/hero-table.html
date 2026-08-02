@@ -1,0 +1,24 @@
+<table [dataSource]="dataSource" class="mat-shadow-2" mat-table>
+  @for (column of columns(); track column.key) {
+    <ng-container [matColumnDef]="column.key">
+      <th *matHeaderCellDef class="text-[#6272A4] text-xl" mat-header-cell>
+        {{ column.label }}
+      </th>
+      <td *matCellDef="let hero" class="text-[#F8F8F2]" mat-cell>
+        {{ hero?.[column.key] }}
+      </td>
+    </ng-container>
+  }
+
+  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+
+
+  <tr *matNoDataRow class="mat-row">
+    @if (isLoading()) {
+      <mat-progress-spinner />
+    } @else {
+      <td class="mat-cell" colspan="4">No hay datos para la busqueda de "{{ currentQuery() }}"</td>
+    }
+  </tr>
+</table>

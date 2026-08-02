@@ -1,4 +1,21 @@
 {
-  "heroes": [],
+  "heroes": [
+    {
+      "name": "Spider-Man",
+      "power": 38200000,
+      "intelligence": 382000,
+      "realName": "Peter Parker",
+      "universe": "ULTIMATE",
+      "id": "jpXcgrlA8Y0"
+    },
+    {
+      "name": "La Mole",
+      "power": 7000000,
+      "intelligence": 777,
+      "realName": "Ben Grimm",
+      "universe": "ULTIMATE",
+      "id": "Ex-GUBQWx1U"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }
