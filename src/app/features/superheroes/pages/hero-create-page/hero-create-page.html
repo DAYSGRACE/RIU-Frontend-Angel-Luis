@@ -1,1 +1,4 @@
-<p>hero-create-page works!</p>
+<app-hero-form
+  (formSubmitted)="createHero($event)"
+  [formTemplate]="heroFormTemplate"
+/>

@@ -7,7 +7,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   selector: 'hero-filter-input',
   imports: [MatFormField, MatInput, MatLabel],
   templateUrl: './hero-filter.html',
-  styleUrl: './hero-filter.css',
+  styleUrl: './hero-filter.scss',
 })
 export class HeroFilter {
   private destroyRef = inject(DestroyRef);

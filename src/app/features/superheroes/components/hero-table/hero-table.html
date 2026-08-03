@@ -1,24 +1,58 @@
-<table [dataSource]="dataSource" class="mat-shadow-2" mat-table>
-  @for (column of columns(); track column.key) {
-    <ng-container [matColumnDef]="column.key">
-      <th *matHeaderCellDef class="text-[#6272A4] text-xl" mat-header-cell>
-        {{ column.label }}
-      </th>
-      <td *matCellDef="let hero" class="text-[#F8F8F2]" mat-cell>
-        {{ hero?.[column.key] }}
-      </td>
-    </ng-container>
+<div class="relative">
+
+  @if (isLoading()) {
+    <div class="absolute inset-0 flex items-center justify-center bg-black/30 z-10">
+      <mat-progress-spinner mode="indeterminate" />
+    </div>
   }
 
-  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  <table [dataSource]="dataSource" class="mat-shadow-2" mat-table>
 
+    @for (column of columns(); track column.key) {
+      <ng-container [matColumnDef]="column.key">
+        <th *matHeaderCellDef class="text-[#6272A4] text-xl" mat-header-cell>
+          {{ column.label }}
+        </th>
 
-  <tr *matNoDataRow class="mat-row">
-    @if (isLoading()) {
-      <mat-progress-spinner />
-    } @else {
-      <td class="mat-cell" colspan="4">No hay datos para la busqueda de "{{ currentQuery() }}"</td>
+        <td *matCellDef="let hero" class="text-[#F8F8F2]" mat-cell>
+          {{ hero?.[column.key] }}
+        </td>
+      </ng-container>
     }
-  </tr>
-</table>
+
+    <ng-container matColumnDef="actions">
+      <th *matHeaderCellDef class="text-[#6272A4] text-xl" mat-header-cell>
+        Acciones
+      </th>
+
+      <td *matCellDef="let hero" mat-cell>
+        <button
+          (click)="edit.emit(hero)"
+          class="text-[#50FA7B]"
+          mat-button>
+          Editar
+        </button>
+
+        <button
+          (click)="delete.emit(hero)"
+          class="text-[#FF5555]"
+          mat-button>
+          Eliminar
+        </button>
+      </td>
+    </ng-container>
+
+
+    <tr *matHeaderRowDef="displayedColumns()" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns();" mat-row></tr>
+
+
+    <tr *matNoDataRow class="mat-row">
+      <td class="mat-cell" colspan="4">
+        {{ emptyDataMessage() }}
+      </td>
+    </tr>
+
+  </table>
+
+</div>

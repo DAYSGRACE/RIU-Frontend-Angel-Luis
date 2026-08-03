@@ -8,9 +8,20 @@
 
 
   <hero-table
+    (delete)="deleteHero($event)"
+    (edit)="editHero($event)"
     [columns]="columnsTable"
     [currentQuery]="this.queryToSearch()"
     [data]="heroListResource.hasValue() ? heroListResource.value().data : []"
+    [displayedColumns]="[
+      'id',
+      'name',
+      'realName',
+      'power',
+      'intelligence',
+      'universe',
+      'actions'
+    ]"
     [isLoading]="heroListResource.isLoading()"
   />
 </section>

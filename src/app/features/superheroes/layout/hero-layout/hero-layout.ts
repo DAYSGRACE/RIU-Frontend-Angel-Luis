@@ -1,13 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { HeroNavbar } from '../../components/hero-navbar/hero-navbar';
 
 @Component({
   selector: 'app-hero-layout',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, HeroNavbar],
   templateUrl: './hero-layout.html',
-  styleUrl: './hero-layout.css',
+  styleUrl: './hero-layout.scss',
 })
 export default class HeroLayout {
-
-  title = signal<string>('Heroes App')
+  title = signal<string>('Heroes App');
 }
