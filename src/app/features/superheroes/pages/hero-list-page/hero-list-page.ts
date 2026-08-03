@@ -8,7 +8,7 @@ import { HeroDTO } from '../../interfaces/hero-dto.interface';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
-import { COLUMNS_HERO_TABLE } from '../../configs/hero-form.config';
+import { COLUMNS_HERO_TABLE } from '../../configs/hero-table.config';
 import { PageEvent } from '@angular/material/paginator';
 
 @Component({

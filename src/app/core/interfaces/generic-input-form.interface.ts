@@ -1,6 +1,9 @@
+import { ValidatorFn } from '@angular/forms';
+
 export interface FormFieldInput {
   key: string;
   label: string;
   type: 'text' | 'number';
-  required?: boolean;
+  validators?: ValidatorFn[];
+  errors?: Record<string, string>;
 }
