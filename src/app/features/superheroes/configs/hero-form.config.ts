@@ -1,4 +1,5 @@
 import { FormFieldInput } from '../../../core/interfaces/generic-input-form.interface';
+import { ColumnTableData } from '../interfaces/column-table-data.interface';
 
 export const HERO_FORM_TEMPLATE: FormFieldInput[] = [
   {
@@ -30,5 +31,33 @@ export const HERO_FORM_TEMPLATE: FormFieldInput[] = [
     label: 'Universo',
     type: 'text',
     required: true,
+  },
+];
+
+
+export const COLUMNS_HERO_TABLE: ColumnTableData[] = [
+  {
+    key: 'id',
+    label: 'ID',
+  },
+  {
+    key: 'name',
+    label: 'Nombre de héroe',
+  },
+  {
+    key: 'realName',
+    label: 'Nombre real',
+  },
+  {
+    key: 'power',
+    label: 'Poder',
+  },
+  {
+    key: 'intelligence',
+    label: 'Inteligencia',
+  },
+  {
+    key: 'universe',
+    label: 'Universo',
   },
 ];

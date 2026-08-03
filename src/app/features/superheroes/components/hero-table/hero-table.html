@@ -55,4 +55,11 @@
 
   </table>
 
+  <mat-paginator
+    (page)="newPaginationData.emit($event)"
+    [length]="totalElements()"
+    [pageIndex]="pageIndex()"
+    [pageSizeOptions]="[5, 10, 20]"
+    [pageSize]="pageSize()">
+  </mat-paginator>
 </div>

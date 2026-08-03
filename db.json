@@ -2,19 +2,73 @@
   "heroes": [
     {
       "name": "Spider-Man",
-      "power": 38200000,
-      "intelligence": 382000,
       "realName": "Peter Parker",
-      "universe": "ULTIMATE",
-      "id": "jpXcgrlA8Y0"
+      "power": 9200000,
+      "intelligence": 9700,
+      "universe": "Earth-616"
     },
     {
-      "name": "La Mole",
+      "name": "Iron Man",
+      "realName": "Tony Stark",
+      "power": 8500000,
+      "intelligence": 10000,
+      "universe": "Earth-616"
+    },
+    {
+      "name": "Captain America",
+      "realName": "Steve Rogers",
+      "power": 6800000,
+      "intelligence": 8500,
+      "universe": "Earth-616"
+    },
+    {
+      "name": "Thor",
+      "realName": "Thor Odinson",
+      "power": 10000000,
+      "intelligence": 7800,
+      "universe": "Asgard"
+    },
+    {
+      "name": "Hulk",
+      "realName": "Bruce Banner",
+      "power": 9800000,
+      "intelligence": 9600,
+      "universe": "Earth-616"
+    },
+    {
+      "name": "Black Widow",
+      "realName": "Natasha Romanoff",
+      "power": 5200000,
+      "intelligence": 9100,
+      "universe": "Earth-616"
+    },
+    {
+      "name": "Doctor Strange",
+      "realName": "Stephen Strange",
+      "power": 9600000,
+      "intelligence": 9800,
+      "universe": "Earth-616"
+    },
+    {
+      "name": "Wolverine",
+      "realName": "Logan",
+      "power": 7400000,
+      "intelligence": 7900,
+      "universe": "Earth-616"
+    },
+    {
+      "name": "Deadpool",
+      "realName": "Wade Wilson",
       "power": 7000000,
-      "intelligence": 777,
-      "realName": "Ben Grimm",
-      "universe": "ULTIMATE",
-      "id": "Ex-GUBQWx1U"
+      "intelligence": 7200,
+      "universe": "Earth-616"
+    },
+    {
+      "name": "Scarlet Witch",
+      "realName": "Wanda Maximoff",
+      "power": 9900000,
+      "intelligence": 9300,
+      "universe": "Earth-616"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
