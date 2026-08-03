@@ -1,0 +1,17 @@
+<section>
+  @if (heroResource.isLoading()) {
+    <div class="flex justify-center">
+      <mat-spinner />
+    </div>
+
+  } @else {
+    @if (heroResource.hasValue() && heroResource.value()) {
+      <app-hero-form
+        (formSubmitted)="openDialogToConfirmEdit($event)"
+        [formTemplate]="heroFormTemplate"
+        [initialValue]="heroData()"
+      />
+    }
+
+  }
+</section>

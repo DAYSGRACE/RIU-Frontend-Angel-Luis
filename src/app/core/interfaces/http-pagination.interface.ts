@@ -1,7 +1,6 @@
 export interface PaginationRequestDTO {
   page: number;
   perPage: number;
-  // TODO -> Agregar orden
   sort: PaginationSortRequestDTO;
 }
 

@@ -1,0 +1,10 @@
+<mat-form-field>
+  <mat-label>{{ labelInput() }}</mat-label>
+  <input
+    #inputEl
+    (keyup)="onInput(inputEl.value)"
+    autofocus
+    matInput
+    type="text"
+  >
+</mat-form-field>

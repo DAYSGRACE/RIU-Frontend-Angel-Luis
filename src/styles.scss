@@ -1,0 +1,55 @@
+/* You can add global styles to this file, and also import other style files */
+
+@use 'tailwindcss';
+@use '@angular/material' as mat;
+
+
+html {
+  @include mat.theme((
+          color: (
+                  theme-type: dark,
+                  primary: (
+                          0: #000000,
+                          10: #1b1028,
+                          20: #32194d,
+                          30: #51267a,
+                          40: #BD93F9,
+                          50: #cba7fa,
+                          60: #d9bbfb,
+                          70: #e6cffc,
+                          80: #f0ddfd,
+                          90: #f8edff,
+                          95: #fcf6ff,
+                          100: #ffffff,
+                  ),
+                  tertiary: (
+                          0: #000000,
+                          10: #002027,
+                          20: #003944,
+                          30: #00525f,
+                          40: #8BE9FD,
+                          50: #a1edfd,
+                          60: #b8f1fe,
+                          70: #cef5fe,
+                          80: #ddf8ff,
+                          90: #effbff,
+                          95: #f7fdff,
+                          100: #ffffff,
+                  )
+          ),
+          typography: Roboto,
+          density: 0
+  ));
+}
+
+body {
+  margin: 0;
+  background: #282A36;
+  color: #F8F8F2;
+}
+
+.custom-dialog .mat-mdc-dialog-container {
+  background: #282a36;
+  color: #f8f8f2;
+  border-radius: 16px;
+}

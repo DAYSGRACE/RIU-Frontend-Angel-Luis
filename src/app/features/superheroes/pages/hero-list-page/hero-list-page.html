@@ -1,0 +1,27 @@
+<section class="flex flex-col gap-3">
+
+  <hero-filter-input
+    (query)="queryToSearch.set($event)"
+    [debounceTime]="500"
+    [labelInput]="'Nombre del Héroe'"
+  />
+
+
+  <hero-table
+    (delete)="deleteHero($event)"
+    (edit)="editHero($event)"
+    [columns]="columnsTable"
+    [currentQuery]="this.queryToSearch()"
+    [data]="heroListResource.hasValue() ? heroListResource.value().data : []"
+    [displayedColumns]="[
+      'id',
+      'name',
+      'realName',
+      'power',
+      'intelligence',
+      'universe',
+      'actions'
+    ]"
+    [isLoading]="heroListResource.isLoading()"
+  />
+</section>
