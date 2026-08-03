@@ -4,10 +4,11 @@ import { HeroDTO } from '../../interfaces/hero-dto.interface';
 import { ColumnTableData } from '../../interfaces/column-table-data.interface';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButton } from '@angular/material/button';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'hero-table',
-  imports: [MatTableModule, MatProgressSpinnerModule, MatButton],
+  imports: [MatTableModule, MatProgressSpinnerModule, MatButton, MatPaginatorModule],
   templateUrl: './hero-table.html',
   styleUrl: './hero-table.scss',
 })
@@ -17,10 +18,17 @@ export class HeroTable {
   columns = input.required<ColumnTableData[]>();
   displayedColumns = input.required<string[]>();
 
+  pageIndex = input<number>(0);
+  pageSize = input<number>(10);
+  totalElements = input<number>(0);
+
+  newPaginationData = output<PageEvent>();
+
   edit = output<HeroDTO>();
   delete = output<HeroDTO>();
 
   emptyDataMessage = computed(() => {
+    if (this.isLoading()) return 'Cargando datos';
     return (this.currentQuery()?.trim()?.length ?? 0 > 0)
       ? `No hay datos para la busqueda de "${this.currentQuery()}"`
       : `No hay datos`;
@@ -35,5 +43,4 @@ export class HeroTable {
       this.dataSource.data = this.data();
     });
   }
-
 }

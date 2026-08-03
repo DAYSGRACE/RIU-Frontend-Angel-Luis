@@ -8,6 +8,8 @@ import { HeroDTO } from '../../interfaces/hero-dto.interface';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
+import { COLUMNS_HERO_TABLE } from '../../configs/hero-form.config';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-hero-list-page',
@@ -21,15 +23,35 @@ export default class HeroListPage {
 
   dialog = inject(MatDialog);
 
+  columnsTable: ColumnTableData[] = COLUMNS_HERO_TABLE;
+
   queryToSearch = signal<string>('');
+  pageIndex = signal<number>(0);
+  pageSize = signal<number>(10);
+
   refreshResource = signal<number>(0);
 
   heroListResource = rxResource({
-    params: () => ({ query: this.queryToSearch(), refresh: this.refreshResource() }),
+    params: () => ({
+      query: this.queryToSearch(),
+      refresh: this.refreshResource(),
+      pageSize: this.pageSize(),
+      pageIndex: this.pageIndex(),
+    }),
     stream: ({ params }) => {
-      return this.heroSvc.getHeroesPagination({ page: 1, perPage: 5, sort: {} }, params.query);
+      return this.heroSvc.getHeroesPagination(
+        { page: params.pageIndex, perPage: params.pageSize, sort: {} },
+        params.query,
+      );
     },
   });
+
+  managePaginationEvents(events: PageEvent) {
+    console.log('page events', events);
+    const { pageSize, pageIndex } = events;
+    this.pageSize.set(pageSize);
+    this.pageIndex.set(pageIndex);
+  }
 
   editHero(hero: HeroDTO) {
     this.router.navigate([`/heroes/edit/${hero.id}`]);
@@ -52,31 +74,4 @@ export default class HeroListPage {
       }
     });
   }
-
-  columnsTable: ColumnTableData[] = [
-    {
-      key: 'id',
-      label: 'ID',
-    },
-    {
-      key: 'name',
-      label: 'Nombre de héroe',
-    },
-    {
-      key: 'realName',
-      label: 'Nombre real',
-    },
-    {
-      key: 'power',
-      label: 'Poder',
-    },
-    {
-      key: 'intelligence',
-      label: 'Inteligencia',
-    },
-    {
-      key: 'universe',
-      label: 'Universo',
-    },
-  ];
 }
