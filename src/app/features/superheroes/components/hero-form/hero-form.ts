@@ -31,7 +31,6 @@ export class HeroForm {
       const value = this.initialValue();
 
       if (value) {
-        console.log(value);
         this.form().patchValue(value);
       }
     });

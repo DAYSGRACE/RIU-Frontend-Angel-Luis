@@ -47,7 +47,6 @@ export default class HeroListPage {
   });
 
   managePaginationEvents(events: PageEvent) {
-    console.log('page events', events);
     const { pageSize, pageIndex } = events;
     this.pageSize.set(pageSize);
     this.pageIndex.set(pageIndex);

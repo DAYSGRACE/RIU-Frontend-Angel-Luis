@@ -50,7 +50,6 @@ export default class HeroEditPage {
       },
     });
     dialogRef.afterClosed().subscribe((shouldEdit) => {
-      console.log(shouldEdit);
       if (shouldEdit) {
         this.editHero(hero);
       }
