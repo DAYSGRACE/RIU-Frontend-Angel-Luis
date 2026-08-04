@@ -3,7 +3,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { FormFieldInput } from '../../../../core/interfaces/generic-input-form.interface';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-hero-form',
@@ -21,7 +21,7 @@ export class HeroForm {
     const controls: Record<string, FormControl> = {};
 
     for (const field of this.formTemplate()) {
-      controls[field.key] = new FormControl('', field.required ? Validators.required : []);
+      controls[field.key] = new FormControl('', field.validators ?? []);
     }
     return new FormGroup(controls);
   });
@@ -36,7 +36,20 @@ export class HeroForm {
     });
   }
 
+  getErrorMessage(field: FormFieldInput): string {
+    const errors = this.form().get(field.key)?.errors;
+
+    if (!errors || !field.errors) {
+      return '';
+    }
+
+    const firstError = Object.keys(errors)[0];
+
+    return field.errors[firstError] ?? '';
+  }
+
   save() {
+    if (!this.form().valid) return;
     this.formSubmitted.emit(this.form().getRawValue());
   }
 }

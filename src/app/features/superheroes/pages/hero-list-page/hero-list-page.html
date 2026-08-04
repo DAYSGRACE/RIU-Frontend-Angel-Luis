@@ -10,6 +10,7 @@
   <hero-table
     (delete)="deleteHero($event)"
     (edit)="editHero($event)"
+    (pageChange)="managePaginationEvents($event)"
     [columns]="columnsTable"
     [currentQuery]="this.queryToSearch()"
     [data]="heroListResource.hasValue() ? heroListResource.value().data : []"
@@ -23,7 +24,6 @@
       'actions'
     ]"
     [isLoading]="heroListResource.isLoading()"
-    (newPaginationData)="managePaginationEvents($event)"
     [pageIndex]="pageIndex()"
     [pageSize]="pageSize()"
     [totalElements]="heroListResource.hasValue() ? heroListResource.value().items : 0"

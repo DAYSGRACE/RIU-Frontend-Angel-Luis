@@ -8,15 +8,18 @@
       <div class="w-full max-w-[80%] mx-auto">
 
         <mat-form-field class="w-full">
+          <mat-label>{{ field.label }}</mat-label>
 
-          <mat-label>
-            {{ field.label }}
-          </mat-label>
           <input
             [formControlName]="field.key"
             [type]="field.type"
             matInput>
 
+          @if (getErrorMessage(field)) {
+            <mat-error>
+              {{ getErrorMessage(field) }}
+            </mat-error>
+          }
         </mat-form-field>
       </div>
     }
@@ -24,7 +27,7 @@
   <button [disabled]="!form().valid"
           class="max-w-120 mx-auto bg-[#414558] w-full p-3"
           color="primary"
-          matButton
+          mat-raised-button
 
   >
     Guardar
