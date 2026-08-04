@@ -40,7 +40,7 @@ export default class HeroListPage {
     }),
     stream: ({ params }) => {
       return this.heroSvc.getHeroesPagination(
-        { page: params.pageIndex, perPage: params.pageSize, sort: {} },
+        { page: params.pageIndex + 1, perPage: params.pageSize, sort: {} },
         params.query,
       );
     },
