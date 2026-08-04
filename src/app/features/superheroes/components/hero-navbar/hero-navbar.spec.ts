@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeroNavbar } from './hero-navbar';
+import { ActivatedRoute } from '@angular/router';
 
 describe('HeroNavbar', () => {
   let component: HeroNavbar;
@@ -9,6 +10,18 @@ describe('HeroNavbar', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HeroNavbar],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: {},
+            snapshot: {
+              params: {},
+              queryParams: {},
+            },
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeroNavbar);

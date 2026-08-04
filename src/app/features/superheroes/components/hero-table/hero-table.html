@@ -6,7 +6,7 @@
     </div>
   }
 
-  <table [dataSource]="dataSource" class="mat-shadow-2" mat-table>
+  <table [dataSource]="data()" class="mat-shadow-2" mat-table>
 
     @for (column of columns(); track column.key) {
       <ng-container [matColumnDef]="column.key">
@@ -48,7 +48,7 @@
 
 
     <tr *matNoDataRow class="mat-row">
-      <td class="mat-cell" colspan="4">
+      <td [attr.colspan]="displayedColumns().length" class="mat-cell">
         {{ emptyDataMessage() }}
       </td>
     </tr>
@@ -56,7 +56,7 @@
   </table>
 
   <mat-paginator
-    (page)="newPaginationData.emit($event)"
+    (page)="pageChange.emit($event)"
     [length]="totalElements()"
     [pageIndex]="pageIndex()"
     [pageSizeOptions]="[5, 10, 20]"

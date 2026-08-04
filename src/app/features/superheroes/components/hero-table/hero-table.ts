@@ -22,25 +22,21 @@ export class HeroTable {
   pageSize = input<number>(10);
   totalElements = input<number>(0);
 
-  newPaginationData = output<PageEvent>();
+  currentQuery = input<string>('');
+
+  pageChange = output<PageEvent>();
 
   edit = output<HeroDTO>();
   delete = output<HeroDTO>();
 
   emptyDataMessage = computed(() => {
-    if (this.isLoading()) return 'Cargando datos';
-    return (this.currentQuery()?.trim()?.length ?? 0 > 0)
-      ? `No hay datos para la busqueda de "${this.currentQuery()}"`
-      : `No hay datos`;
+    if (this.isLoading()) {
+      return 'Cargando datos';
+    }
+
+    return this.currentQuery().trim()
+      ? `No hay datos para la búsqueda de "${this.currentQuery()}"`
+      : 'No hay datos';
   });
 
-  currentQuery = input<string>();
-
-  dataSource = new MatTableDataSource<HeroDTO>([]);
-
-  constructor() {
-    effect(() => {
-      this.dataSource.data = this.data();
-    });
-  }
 }
