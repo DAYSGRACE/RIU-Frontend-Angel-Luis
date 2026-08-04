@@ -1,11 +1,5 @@
 <div class="relative">
 
-  @if (isLoading()) {
-    <div class="absolute inset-0 flex items-center justify-center bg-black/30 z-10">
-      <mat-progress-spinner mode="indeterminate" />
-    </div>
-  }
-
   <table [dataSource]="data()" class="mat-shadow-2" mat-table>
 
     @for (column of columns(); track column.key) {
