@@ -1,19 +1,19 @@
-import { Component, computed, inject, Signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { SuperHeroService } from '../../services/super-hero-service';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { HeroForm } from '../../components/hero-form/hero-form';
 import { HERO_FORM_TEMPLATE } from '../../configs/hero-form.config';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import { HeroMapper } from '../../mappers/hero.mapper';
 import { MessageDialog } from '../../../../shared/components/message-dialog/message-dialog';
+import { HeroDTO } from '../../interfaces/hero-dto.interface';
 
 @Component({
   selector: 'app-hero-edit-page',
-  imports: [MatProgressSpinner, HeroForm],
+  imports: [HeroForm],
   templateUrl: './hero-edit-page.html',
   styleUrl: './hero-edit-page.scss',
 })
@@ -24,22 +24,12 @@ export default class HeroEditPage {
 
   dialog = inject(MatDialog);
 
-  heroId: Signal<string> = toSignal(this.route.params.pipe(map((params) => params['id'])), {
-    initialValue: '',
-  });
-
   heroFormTemplate = HERO_FORM_TEMPLATE;
 
-  heroData = computed(() => {
-    const val = this.heroResource.value();
-    return val ? (val as unknown as Record<string, unknown>) : {};
-  });
+  hero = toSignal<HeroDTO>(this.route.data.pipe(map((data) => data['hero'])));
 
-  heroResource = rxResource({
-    params: () => ({ heroId: this.heroId() }),
-    stream: ({ params }) => {
-      return this.heroSvc.getHeroById(params.heroId);
-    },
+  heroData = computed<Record<string, unknown>>(() => {
+    return this.hero() ?? {};
   });
 
   openDialogToConfirmEdit(hero: { [key: string]: unknown }) {
@@ -58,7 +48,7 @@ export default class HeroEditPage {
 
   editHero(hero: { [key: string]: unknown }) {
     const heroModified = HeroMapper.toDTO(hero);
-    this.heroSvc.editHero(heroModified, this.heroId()).subscribe({
+    this.heroSvc.editHero(heroModified, this.hero()?.id!).subscribe({
       next: () => {
         const dialogRef = this.dialog.open(MessageDialog, {
           data: {

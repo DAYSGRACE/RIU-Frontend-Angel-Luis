@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { heroResolver } from './resolvers/hero-resolver';
 
 export const heroRoutes: Routes = [
   {
@@ -19,6 +20,9 @@ export const heroRoutes: Routes = [
         path: 'edit/:id',
         title: 'Editar héroe',
         loadComponent: () => import('./pages/hero-edit-page/hero-edit-page'),
+        resolve: {
+          hero: heroResolver,
+        },
       },
     ],
   },
