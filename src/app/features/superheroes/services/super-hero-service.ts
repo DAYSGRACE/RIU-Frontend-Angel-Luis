@@ -5,7 +5,7 @@ import {
   PaginationResponseDTO,
 } from '../../../core/interfaces/http-pagination.interface';
 import { HeroDTO, HeroDTOCreation } from '../interfaces/hero-dto.interface';
-import { delay, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Service()
 export class SuperHeroService {
@@ -26,26 +26,24 @@ export class SuperHeroService {
     if (queryStr && queryStr.trim().length > 0) {
       params = params.set('name:contains', queryStr);
     }
-    return this.httpClient
-      .get<PaginationResponseDTO<HeroDTO>>(`${this.URL_HEROES}`, {
-        params,
-      })
-      .pipe(delay(1500));
+    return this.httpClient.get<PaginationResponseDTO<HeroDTO>>(`${this.URL_HEROES}`, {
+      params,
+    });
   }
 
   getHeroById(id: string): Observable<HeroDTO> {
-    return this.httpClient.get<HeroDTO>(`${this.URL_HEROES}/${id}`).pipe(delay(1500));
+    return this.httpClient.get<HeroDTO>(`${this.URL_HEROES}/${id}`);
   }
 
   createHero(heroDTO: HeroDTOCreation): Observable<HeroDTO> {
-    return this.httpClient.post<HeroDTO>(`${this.URL_HEROES}`, heroDTO).pipe(delay(1500));
+    return this.httpClient.post<HeroDTO>(`${this.URL_HEROES}`, heroDTO);
   }
 
   editHero(heroDTO: HeroDTOCreation, id: string): Observable<HeroDTO> {
-    return this.httpClient.put<HeroDTO>(`${this.URL_HEROES}/${id}`, heroDTO).pipe(delay(1500));
+    return this.httpClient.put<HeroDTO>(`${this.URL_HEROES}/${id}`, heroDTO);
   }
 
   deleteHero(id: string): Observable<HeroDTO> {
-    return this.httpClient.delete<HeroDTO>(`${this.URL_HEROES}/${id}`).pipe(delay(1500));
+    return this.httpClient.delete<HeroDTO>(`${this.URL_HEROES}/${id}`);
   }
 }
