@@ -1,0 +1,9 @@
+<section>
+  @if (heroData()) {
+    <app-hero-form
+      (formSubmitted)="openDialogToConfirmEdit($event)"
+      [formTemplate]="heroFormTemplate"
+      [initialValue]="heroData()"
+    />
+  }
+</section>

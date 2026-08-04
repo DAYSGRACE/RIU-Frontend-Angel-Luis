@@ -1,0 +1,10 @@
+<mat-toolbar class="justify-between">
+  <span>{{ pageTitle() }}</span>
+
+  <nav class="flex">
+    @for (route of routes; track route) {
+      <a [routerLink]="[route.path]" mat-button>{{ route.label }}</a>
+    }
+  </nav>
+
+</mat-toolbar>

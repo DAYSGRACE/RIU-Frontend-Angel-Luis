@@ -1,0 +1,37 @@
+<form
+  (ngSubmit)="save()"
+  [formGroup]="form()"
+  class="flex flex-col max-w-200 mx-auto bg-[#232530] rounded-2xl py-4 px-1">
+
+  <section class="grid grid-cols-1">
+    @for (field of formTemplate(); track field.key) {
+      <div class="w-full max-w-[80%] mx-auto">
+
+        <mat-form-field class="w-full">
+          <mat-label>{{ field.label }}</mat-label>
+
+          <input
+            [formControlName]="field.key"
+            [type]="field.type"
+            matInput>
+
+          @if (getErrorMessage(field)) {
+            <mat-error>
+              {{ getErrorMessage(field) }}
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+    }
+  </section>
+  <button [disabled]="!form().valid"
+          class="max-w-120 mx-auto bg-[#414558] w-full p-3"
+          color="primary"
+          mat-raised-button
+
+  >
+    Guardar
+  </button>
+
+
+</form>

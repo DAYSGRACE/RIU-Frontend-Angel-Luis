@@ -1,16 +1,93 @@
 {
   "heroes": [
     {
-      "id": 1,
-      "name": "Superman",
-      "powers": [
-        {
-          "name": "Laser Vision",
-          "description": "See through walls with laser beams",
-          "level": "Advanced",
-          "effect": "Increases visibility through walls"
-        }
-      ]
+      "name": "Spider-Man",
+      "realName": "Peter Parker",
+      "power": 9200000,
+      "intelligence": 9700,
+      "universe": "Earth-616",
+      "id": "0lf_mcwuy2U"
+    },
+    {
+      "name": "Iron Man",
+      "realName": "Tony Stark",
+      "power": 8500000,
+      "intelligence": 10000,
+      "universe": "Earth-616",
+      "id": "sKBFTKlgF70"
+    },
+    {
+      "name": "Captain America",
+      "realName": "Steve Rogers",
+      "power": 6800000,
+      "intelligence": 8500,
+      "universe": "Earth-616",
+      "id": "bxm1Ta2_bQo"
+    },
+    {
+      "name": "Thor",
+      "realName": "Thor Odinson",
+      "power": 10000000,
+      "intelligence": 7800,
+      "universe": "Asgard",
+      "id": "FKcuwDd_Nto"
+    },
+    {
+      "name": "Hulk",
+      "realName": "Bruce Banner",
+      "power": 9800000,
+      "intelligence": 9600,
+      "universe": "Earth-616",
+      "id": "d67kuE9Ztn4"
+    },
+    {
+      "name": "Black Widow",
+      "realName": "Natasha Romanoff",
+      "power": 5200000,
+      "intelligence": 9100,
+      "universe": "Earth-616",
+      "id": "VIMEyRd7JwQ"
+    },
+    {
+      "name": "Doctor Strange",
+      "realName": "Stephen Strange",
+      "power": 9600000,
+      "intelligence": 9800,
+      "universe": "Earth-616",
+      "id": "YeM7OQqldUA"
+    },
+    {
+      "name": "Wolverine",
+      "realName": "Logan",
+      "power": 7400000,
+      "intelligence": 7900,
+      "universe": "Earth-616",
+      "id": "Yzsz1EO4EyE"
+    },
+    {
+      "name": "Deadpool",
+      "realName": "Wade Wilson",
+      "power": 7000000,
+      "intelligence": 7200,
+      "universe": "Earth-616",
+      "id": "8GVvYi_1cQY"
+    },
+    {
+      "name": "Scarlet Witch",
+      "realName": "Wanda Maximoff",
+      "power": 9900000,
+      "intelligence": 9300,
+      "universe": "Earth-616",
+      "id": "7G-4ndawg94"
+    },
+    {
+      "name": "Jose Jose",
+      "realName": "Jose",
+      "power": 70000000003,
+      "intelligence": 30000000000,
+      "universe": "Tierra",
+      "id": "pYN0hbxPJVk"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
