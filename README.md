@@ -15,7 +15,7 @@ Aplicación desarrollada con Angular 22 para la gestión de superhéroes como pa
 
 ---
 
-## Requisitos.
+## Requisitos
 
 - Node.js 24 o superior
 - npm 11 o superior
@@ -77,7 +77,7 @@ En una nueva terminal ejecuta:
 npm start
 ```
 
-o
+o:
 
 ```bash
 ng serve
@@ -87,6 +87,72 @@ La aplicación estará disponible en:
 
 ```text
 http://localhost:4200
+```
+
+---
+
+## Ejecución local con Docker
+
+El proyecto incluye una configuración de Docker Compose que permite levantar la aplicación Angular y el servidor `json-server` conjuntamente, sin necesidad de instalar Node.js ni ejecutar los servicios manualmente.
+
+### Requisitos
+
+- Docker / Podman
+- Docker Compose / Podman Compose
+
+Puedes comprobar que Docker está instalado mediante:
+
+```bash
+docker --version
+docker compose version
+```
+o
+```bash
+podman --version
+podman compose version
+```
+
+### Iniciar los servicios
+
+Desde la raíz del proyecto ejecuta:
+
+```bash
+docker compose up --build
+```
+o
+```bash
+podman compose up --build
+```
+
+El comando construirá la imagen de producción de Angular utilizando el `Dockerfile` y levantará los dos servicios:
+
+- **frontend:** aplicación Angular servida mediante Nginx.
+- **json-server:** API REST simulada utilizando `db.json`.
+
+La aplicación estará disponible en:
+
+```text
+http://localhost:4200
+```
+
+La API estará disponible en:
+
+```text
+http://localhost:8080
+```
+
+### Ejecutar en segundo plano
+
+Para iniciar los servicios en segundo plano:
+
+```bash
+docker compose up --build -d
+```
+
+Para detenerlos:
+
+```bash
+docker compose down
 ```
 
 ---
@@ -121,7 +187,7 @@ Para ejecutar las pruebas:
 npm run test
 ```
 
-o
+o:
 
 ```bash
 ng t
@@ -137,23 +203,24 @@ Las pruebas cubren principalmente:
 - Paginación.
 - Diálogos de confirmación.
 - Estados de carga y búsqueda.
+
 ---
 
-### Build
+## Build
 
 Para generar una build de producción:
 
-```
+```bash
 npm run build
 ```
 
 Los archivos generados estarán disponibles en el directorio:
 
-```
+```text
 dist/
 ```
----
 
+---
 
 ## Autor
 
