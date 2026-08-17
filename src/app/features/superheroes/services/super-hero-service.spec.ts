@@ -13,7 +13,7 @@ describe('SuperHeroService', () => {
   let service: SuperHeroService;
   let httpController: HttpTestingController;
 
-  const BASE_URL = 'http://localhost:8080/heroes';
+  const BASE_URL = '/api/heroes';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -134,7 +134,7 @@ describe('SuperHeroService', () => {
         expect(response).toEqual(heroResponse);
       });
 
-      const request = httpController.expectOne('http://localhost:8080/heroes');
+      const request = httpController.expectOne(BASE_URL);
 
       expect(request.request.method).toBe('POST');
       expect(request.request.body).toEqual(heroCreation);

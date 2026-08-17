@@ -1,8 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { HeroFilter } from '../../components/hero-filter/hero-filter';
 import { HeroTable } from '../../components/hero-table/hero-table';
 import { SuperHeroService } from '../../services/super-hero-service';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ColumnTableData } from '../../interfaces/column-table-data.interface';
 import { HeroDTO } from '../../interfaces/hero-dto.interface';
 import { Router } from '@angular/router';
@@ -18,18 +18,15 @@ import { PageEvent } from '@angular/material/paginator';
   styleUrl: './hero-list-page.scss',
 })
 export default class HeroListPage {
-  router = inject(Router);
-  heroSvc = inject(SuperHeroService);
-
-  dialog = inject(MatDialog);
-
-  columnsTable: ColumnTableData[] = COLUMNS_HERO_TABLE;
-
-  queryToSearch = signal<string>('');
-  pageIndex = signal<number>(0);
-  pageSize = signal<number>(10);
-
-  refreshResource = signal<number>(0);
+  protected readonly columnsTable: ColumnTableData[] = COLUMNS_HERO_TABLE;
+  public readonly queryToSearch = signal<string>('');
+  public readonly pageIndex = signal<number>(0);
+  public readonly pageSize = signal<number>(10);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
+  private readonly heroSvc = inject(SuperHeroService);
+  private dialog = inject(MatDialog);
+  private readonly refreshResource = signal<number>(0);
 
   heroListResource = rxResource({
     params: () => ({
@@ -44,6 +41,11 @@ export default class HeroListPage {
         params.query,
       );
     },
+  });
+
+  private readonly queryToSearchEffect = effect(() => {
+    this.queryToSearch();
+    this.pageIndex.set(0);
   });
 
   managePaginationEvents(events: PageEvent) {
@@ -63,14 +65,21 @@ export default class HeroListPage {
         message: '¿Esta seguro de eliminar al héroe?',
       },
     });
-    dialogRef.afterClosed().subscribe((shouldDelete) => {
-      if (shouldDelete) {
-        this.heroSvc.deleteHero(hero.id).subscribe({
-          complete: () => {
-            this.refreshResource.update((curr) => curr + 1);
-          },
-        });
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((shouldDelete: boolean) => {
+        if (shouldDelete) {
+          this.heroSvc
+            .deleteHero(hero.id)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+              complete: () => {
+                this.refreshResource.update((curr) => curr + 1);
+                this.pageIndex.set(0);
+              },
+            });
+        }
+      });
   }
 }

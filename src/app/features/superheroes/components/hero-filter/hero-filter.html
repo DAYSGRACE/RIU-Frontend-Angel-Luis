@@ -2,7 +2,7 @@
   <mat-label>{{ labelInput() }}</mat-label>
   <input
     #inputEl
-    (keyup)="onInput(inputEl.value)"
+    (input)="onInput(inputEl.value)"
     autofocus
     matInput
     type="text"

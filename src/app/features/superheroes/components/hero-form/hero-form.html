@@ -1,7 +1,7 @@
 <form
   (ngSubmit)="save()"
   [formGroup]="form()"
-  class="flex flex-col max-w-200 mx-auto bg-[#232530] rounded-2xl py-4 px-1">
+  class="flex flex-col max-w-200 mx-auto bg-[#232530] rounded-2xl py-16 px-1">
 
   <section class="grid grid-cols-1">
     @for (field of formTemplate(); track field.key) {
@@ -15,9 +15,9 @@
             [type]="field.type"
             matInput>
 
-          @if (getErrorMessage(field)) {
+          @if (getErrorMessage(field); as errorMessage) {
             <mat-error>
-              {{ getErrorMessage(field) }}
+              {{ errorMessage }}
             </mat-error>
           }
         </mat-form-field>

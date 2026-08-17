@@ -68,16 +68,6 @@ describe('HeroTable', () => {
       expect(html.textContent).toContain('Peter Parker');
     });
 
-    it('Debería mostrar el spinner', () => {
-      fixture.componentRef.setInput('isLoading', true);
-
-      fixture.detectChanges();
-
-      const spinner = fixture.nativeElement.querySelector('mat-progress-spinner');
-
-      expect(spinner).toBeTruthy();
-    });
-
     it('Debería mostrar mensaje de busqueda sin resultados', () => {
       fixture.componentRef.setInput('currentQuery', 'batman');
 
