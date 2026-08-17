@@ -1,17 +1,17 @@
 import { inject, Service } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import {
   PaginationRequestDTO,
   PaginationResponseDTO,
 } from '../../../core/interfaces/http-pagination.interface';
 import { HeroDTO, HeroDTOCreation } from '../interfaces/hero-dto.interface';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 
 @Service()
 export class SuperHeroService {
   private httpClient = inject(HttpClient);
 
-  private URL = 'http://localhost:8080';
+  private URL = '/api';
   private URL_HEROES = `${this.URL}/heroes`;
 
   getHeroesPagination(pagination: PaginationRequestDTO, queryStr?: string) {
@@ -36,7 +36,14 @@ export class SuperHeroService {
   }
 
   createHero(heroDTO: HeroDTOCreation): Observable<HeroDTO> {
-    return this.httpClient.post<HeroDTO>(`${this.URL_HEROES}`, heroDTO);
+    return this.httpClient.post<HeroDTO>(`${this.URL_HEROES}`, heroDTO)
+      .pipe(catchError((err: HttpErrorResponse) => {
+        if (err.status === 0) {
+          return throwError(() => new Error('No se logro crear el héroe, se perdio la conexión con el servidor, pruebe en otro momento'));
+        }
+        return throwError(() => new Error('No se logro crear el héroe, ocurrio un error inesperado'));
+      }))
+      ;
   }
 
   editHero(heroDTO: HeroDTOCreation, id: string): Observable<HeroDTO> {

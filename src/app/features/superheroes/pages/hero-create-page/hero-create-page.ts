@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { HeroForm } from '../../components/hero-form/hero-form';
 import { HERO_FORM_TEMPLATE } from '../../configs/hero-form.config';
 import { HeroMapper } from '../../mappers/hero.mapper';
@@ -6,6 +6,8 @@ import { SuperHeroService } from '../../services/super-hero-service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageDialog } from '../../../../shared/components/message-dialog/message-dialog';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-hero-create-page',
@@ -14,13 +16,11 @@ import { Router } from '@angular/router';
   styleUrl: './hero-create-page.scss',
 })
 export default class HeroCreatePage {
-  heroFormTemplate = HERO_FORM_TEMPLATE;
-
-  router = inject(Router);
-
-  heroSvc = inject(SuperHeroService);
-
-  dialog = inject(MatDialog);
+  protected readonly heroFormTemplate = HERO_FORM_TEMPLATE;
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
+  private readonly heroSvc = inject(SuperHeroService);
+  private readonly dialog = inject(MatDialog);
 
   createHero(formData: { [key: string]: unknown }): void {
     const heroDTOCreation = HeroMapper.toDTO(formData);
@@ -33,9 +33,26 @@ export default class HeroCreatePage {
           },
         });
 
-        dialogRef.afterClosed().subscribe(() => {
-          this.router.navigate(['/']);
+        dialogRef
+          .afterClosed()
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => {
+            this.router.navigate(['/']);
+          });
+      },
+      error: (error: Error) => {
+        const dialogRef = this.dialog.open(ConfirmDialog, {
+          data: {
+            title: 'Error',
+            message: `${error.message}, se redirigira a la página principal`,
+          },
         });
+        dialogRef
+          .afterClosed()
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe((shouldNavigate: boolean) => {
+            if (shouldNavigate) this.router.navigate(['/']);
+          });
       },
     });
   }

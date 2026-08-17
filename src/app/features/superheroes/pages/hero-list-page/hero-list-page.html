@@ -2,7 +2,7 @@
 
   <hero-filter-input
     (query)="queryToSearch.set($event)"
-    [debounceTime]="500"
+    [debounceMs]="500"
     [labelInput]="'Nombre del Héroe'"
   />
 
@@ -23,7 +23,7 @@
       'universe',
       'actions'
     ]"
-    [isLoading]="false"
+    [isLoading]="heroListResource.isLoading()"
     [pageIndex]="pageIndex()"
     [pageSize]="pageSize()"
     [totalElements]="heroListResource.hasValue() ? heroListResource.value().items : 0"

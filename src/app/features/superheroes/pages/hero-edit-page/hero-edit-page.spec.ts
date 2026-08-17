@@ -41,6 +41,16 @@ describe('HeroEditPage', () => {
         {
           provide: ActivatedRoute,
           useValue: {
+            data: of({
+              hero: {
+                id: 'jsklfdjs',
+                name: 'Batman',
+                realName: 'Bruce Wayne',
+                power: 100,
+                intelligence: 100,
+                universe: 'DC',
+              },
+            }),
             params: of({ id: 'jsklfdjs' }),
             snapshot: {
               params: { id: 'jsklfdjs' },
@@ -94,7 +104,7 @@ describe('HeroEditPage', () => {
     expect(heroServiceMock.editHero).toHaveBeenCalled();
   });
 
-  it('No debería al héroe al cancelar', () => {
+  it('No debería editar al héroe al cancelar', () => {
     dialogMock.open.mockReturnValue({
       afterClosed: () => of(false),
     });

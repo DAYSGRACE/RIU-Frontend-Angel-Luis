@@ -1,6 +1,6 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, DestroyRef, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { SuperHeroService } from '../../services/super-hero-service';
 import { HeroForm } from '../../components/hero-form/hero-form';
@@ -18,19 +18,28 @@ import { HeroDTO } from '../../interfaces/hero-dto.interface';
   styleUrl: './hero-edit-page.scss',
 })
 export default class HeroEditPage {
-  route = inject(ActivatedRoute);
-  router = inject(Router);
-  heroSvc = inject(SuperHeroService);
+  protected readonly heroFormTemplate = HERO_FORM_TEMPLATE;
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly heroSvc = inject(SuperHeroService);
+  private readonly dialog = inject(MatDialog);
+  private readonly hero = toSignal<HeroDTO>(
+    this.route.data.pipe(map((data): HeroDTO => data['hero'])),
+  );
 
-  dialog = inject(MatDialog);
-
-  heroFormTemplate = HERO_FORM_TEMPLATE;
-
-  hero = toSignal<HeroDTO>(this.route.data.pipe(map((data) => data['hero'])));
-
-  heroData = computed<Record<string, unknown>>(() => {
-    return this.hero() ?? {};
+  private readonly heroDataDTO = computed<HeroDTO>(() => {
+    const hero = this.hero();
+    if (hero === undefined) {
+      this.router.navigate(['/heroes']);
+      throw new Error('No se encontro al héroe');
+    }
+    return hero;
   });
+
+  protected readonly heroData = computed<Record<string, unknown>>(() =>
+    Object.fromEntries(Object.entries(this.heroDataDTO())),
+  );
 
   openDialogToConfirmEdit(hero: { [key: string]: unknown }) {
     const dialogRef = this.dialog.open(ConfirmDialog, {
@@ -39,16 +48,19 @@ export default class HeroEditPage {
         message: '¿Está seguro de editarlo?',
       },
     });
-    dialogRef.afterClosed().subscribe((shouldEdit) => {
-      if (shouldEdit) {
-        this.editHero(hero);
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((shouldEdit: boolean) => {
+        if (shouldEdit) {
+          this.editHero(hero);
+        }
+      });
   }
 
   editHero(hero: { [key: string]: unknown }) {
     const heroModified = HeroMapper.toDTO(hero);
-    this.heroSvc.editHero(heroModified, this.hero()?.id!).subscribe({
+    this.heroSvc.editHero(heroModified, this.heroDataDTO().id).subscribe({
       next: () => {
         const dialogRef = this.dialog.open(MessageDialog, {
           data: {
@@ -56,9 +68,12 @@ export default class HeroEditPage {
             message: 'Se ha modificado al héroe correctamente',
           },
         });
-        dialogRef.afterClosed().subscribe((shouldEdit) => {
-          this.router.navigate(['/heroes']);
-        });
+        dialogRef
+          .afterClosed()
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => {
+            this.router.navigate(['/heroes']);
+          });
       },
       error: () => {
         const dialogRef = this.dialog.open(MessageDialog, {
@@ -67,9 +82,12 @@ export default class HeroEditPage {
             message: 'Hubo un problema al editar al héroe',
           },
         });
-        dialogRef.afterClosed().subscribe((shouldEdit) => {
-          this.router.navigate(['/heroes']);
-        });
+        dialogRef
+          .afterClosed()
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => {
+            this.router.navigate(['/heroes']);
+          });
       },
     });
   }

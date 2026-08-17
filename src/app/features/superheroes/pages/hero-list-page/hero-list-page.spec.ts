@@ -68,7 +68,7 @@ describe('HeroListPage', () => {
   it('Debería cargar datos al iniciar', () => {
     expect(heroServiceMock.getHeroesPagination).toHaveBeenCalledWith(
       {
-        page: 0,
+        page: 1,
         perPage: 10,
         sort: {},
       },
