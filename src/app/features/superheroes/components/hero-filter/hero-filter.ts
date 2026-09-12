@@ -1,4 +1,12 @@
-import { Component, DestroyRef, inject, input, OnInit, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  input,
+  OnInit,
+  output,
+} from '@angular/core';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -8,16 +16,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   imports: [MatFormField, MatInput, MatLabel],
   templateUrl: './hero-filter.html',
   styleUrl: './hero-filter.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroFilter implements OnInit {
-  private readonly destroyRef = inject(DestroyRef);
-
   debounceMs = input<number>(500);
-
   labelInput = input.required<string>();
-
   query = output<string>();
-
+  private readonly destroyRef = inject(DestroyRef);
   private querySubject = new Subject<string>();
 
   ngOnInit() {

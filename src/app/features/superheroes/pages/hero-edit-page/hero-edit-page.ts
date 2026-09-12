@@ -1,7 +1,6 @@
-import { Component, computed, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SuperHeroService } from '../../services/super-hero-service';
 import { HeroForm } from '../../components/hero-form/hero-form';
 import { HERO_FORM_TEMPLATE } from '../../configs/hero-form.config';
@@ -10,12 +9,14 @@ import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/conf
 import { HeroMapper } from '../../mappers/hero.mapper';
 import { MessageDialog } from '../../../../shared/components/message-dialog/message-dialog';
 import { HeroDTO } from '../../interfaces/hero-dto.interface';
+import { HeroRouteData } from '../../interfaces/HeroRouteData';
 
 @Component({
   selector: 'app-hero-edit-page',
   imports: [HeroForm],
   templateUrl: './hero-edit-page.html',
   styleUrl: './hero-edit-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class HeroEditPage {
   protected readonly heroFormTemplate = HERO_FORM_TEMPLATE;
@@ -24,21 +25,11 @@ export default class HeroEditPage {
   private readonly router = inject(Router);
   private readonly heroSvc = inject(SuperHeroService);
   private readonly dialog = inject(MatDialog);
-  private readonly hero = toSignal<HeroDTO>(
-    this.route.data.pipe(map((data): HeroDTO => data['hero'])),
-  );
 
-  private readonly heroDataDTO = computed<HeroDTO>(() => {
-    const hero = this.hero();
-    if (hero === undefined) {
-      this.router.navigate(['/heroes']);
-      throw new Error('No se encontro al héroe');
-    }
-    return hero;
-  });
+  private readonly heroDataDTO: HeroDTO = (this.route.snapshot.data as HeroRouteData).hero;
 
   protected readonly heroData = computed<Record<string, unknown>>(() =>
-    Object.fromEntries(Object.entries(this.heroDataDTO())),
+    Object.fromEntries(Object.entries(this.heroDataDTO)),
   );
 
   openDialogToConfirmEdit(hero: { [key: string]: unknown }) {
@@ -60,7 +51,7 @@ export default class HeroEditPage {
 
   editHero(hero: { [key: string]: unknown }) {
     const heroModified = HeroMapper.toDTO(hero);
-    this.heroSvc.editHero(heroModified, this.heroDataDTO().id).subscribe({
+    this.heroSvc.editHero(heroModified, this.heroDataDTO.id).subscribe({
       next: () => {
         const dialogRef = this.dialog.open(MessageDialog, {
           data: {

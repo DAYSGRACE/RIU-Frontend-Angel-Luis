@@ -1,5 +1,5 @@
-import { Component, computed, effect, input, output } from '@angular/core';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { MatTableModule } from '@angular/material/table';
 import { HeroDTO } from '../../interfaces/hero-dto.interface';
 import { ColumnTableData } from '../../interfaces/column-table-data.interface';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -11,6 +11,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
   imports: [MatTableModule, MatProgressSpinnerModule, MatButton, MatPaginatorModule],
   templateUrl: './hero-table.html',
   styleUrl: './hero-table.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroTable {
   data = input.required<HeroDTO[]>();
@@ -38,5 +39,4 @@ export class HeroTable {
       ? `No hay datos para la búsqueda de "${this.currentQuery()}"`
       : 'No hay datos';
   });
-
 }

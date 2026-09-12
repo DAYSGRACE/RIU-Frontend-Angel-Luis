@@ -1,4 +1,4 @@
-import { Component, computed, effect, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, input, output } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
@@ -10,6 +10,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   imports: [MatFormFieldModule, MatInputModule, MatButton, ReactiveFormsModule],
   templateUrl: './hero-form.html',
   styleUrl: './hero-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroForm {
   formTemplate = input.required<FormFieldInput[]>();
