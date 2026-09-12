@@ -66,11 +66,11 @@ export default class HeroEditPage {
             this.router.navigate(['/heroes']);
           });
       },
-      error: () => {
+      error: (error: Error) => {
         const dialogRef = this.dialog.open(MessageDialog, {
           data: {
             title: 'Error al editar',
-            message: 'Hubo un problema al editar al héroe',
+            message: `${error.message}, se redirigira a la página principal`,
           },
         });
         dialogRef

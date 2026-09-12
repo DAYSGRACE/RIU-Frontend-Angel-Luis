@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import { COLUMNS_HERO_TABLE } from '../../configs/hero-table.config';
 import { PageEvent } from '@angular/material/paginator';
+import { MessageDialog } from '../../../../shared/components/message-dialog/message-dialog';
 
 @Component({
   selector: 'app-hero-list-page',
@@ -76,18 +77,28 @@ export default class HeroListPage {
     dialogRef
       .afterClosed()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((shouldDelete: boolean) => {
-        if (shouldDelete) {
-          this.heroSvc
-            .deleteHero(hero.id)
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({
-              complete: () => {
-                this.refreshResource.update((curr) => curr + 1);
-                this.pageIndex.set(0);
-              },
-            });
-        }
+      .subscribe({
+        next: (shouldDelete: boolean) => {
+          if (shouldDelete) {
+            this.heroSvc
+              .deleteHero(hero.id)
+              .pipe(takeUntilDestroyed(this.destroyRef))
+              .subscribe({
+                complete: () => {
+                  this.refreshResource.update((curr) => curr + 1);
+                  this.pageIndex.set(0);
+                },
+                error: (error: Error) => {
+                  this.dialog.open(MessageDialog, {
+                    data: {
+                      title: 'Error al eliminar héroe',
+                      message: `${error.message}`,
+                    },
+                  });
+                },
+              });
+          }
+        },
       });
   }
 }

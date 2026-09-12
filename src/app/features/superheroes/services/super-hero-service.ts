@@ -54,10 +54,24 @@ export class SuperHeroService {
   }
 
   editHero(heroDTO: HeroDTOCreation, id: string): Observable<HeroDTO> {
-    return this.httpClient.put<HeroDTO>(`${this.URL_HEROES}/${id}`, heroDTO);
+    return this.httpClient.put<HeroDTO>(`${this.URL_HEROES}/${id}`, heroDTO)
+      .pipe(catchError((err: HttpErrorResponse) => {
+        if (err.status === 0) {
+          return throwError(() => new Error('No se logro editar el héroe, se perdio la conexión con el servidor, pruebe en otro momento'));
+        }
+        return throwError(() => new Error('No se logro editar el héroe, ocurrio un error inesperado'));
+      }))
+      ;
   }
 
   deleteHero(id: string): Observable<HeroDTO> {
-    return this.httpClient.delete<HeroDTO>(`${this.URL_HEROES}/${id}`);
+    return this.httpClient.delete<HeroDTO>(`${this.URL_HEROES}/${id}`)
+      .pipe(catchError((err: HttpErrorResponse) => {
+        if (err.status === 0) {
+          return throwError(() => new Error('No se logro eliminar el héroe, se perdio la conexión con el servidor, pruebe en otro momento'));
+        }
+        return throwError(() => new Error('No se logro eliminar el héroe, ocurrio un error inesperado'));
+      }))
+      ;
   }
 }

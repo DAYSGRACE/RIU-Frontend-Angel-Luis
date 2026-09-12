@@ -42,7 +42,7 @@ export default class HeroCreatePage {
           });
       },
       error: (error: Error) => {
-        const dialogRef = this.dialog.open(ConfirmDialog, {
+        const dialogRef = this.dialog.open(MessageDialog, {
           data: {
             title: 'Error',
             message: `${error.message}, se redirigira a la página principal`,
@@ -51,8 +51,8 @@ export default class HeroCreatePage {
         dialogRef
           .afterClosed()
           .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe((shouldNavigate: boolean) => {
-            if (shouldNavigate) this.router.navigate(['/']);
+          .subscribe(() => {
+            this.router.navigate(['/']);
           });
       },
     });
