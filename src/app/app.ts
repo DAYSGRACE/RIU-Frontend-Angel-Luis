@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal,
+  ChangeDetectionStrategy} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Spinner } from './shared/components/spinner/spinner';
 
@@ -7,7 +8,8 @@ import { Spinner } from './shared/components/spinner/spinner';
   imports: [RouterOutlet, Spinner],
   templateUrl: './app.html',
   styleUrl: './app.scss',
-})
+  changeDetection: ChangeDetectionStrategy.OnPush
+  })
 export class App {
   protected readonly title = signal('RIU-Frontend-Angel-Luis');
 }

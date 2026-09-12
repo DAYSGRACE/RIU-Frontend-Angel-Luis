@@ -1,4 +1,5 @@
-import { Component, computed, effect, input, output } from '@angular/core';
+import { Component, computed, effect, input, output,
+  ChangeDetectionStrategy} from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { HeroDTO } from '../../interfaces/hero-dto.interface';
 import { ColumnTableData } from '../../interfaces/column-table-data.interface';
@@ -11,7 +12,8 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
   imports: [MatTableModule, MatProgressSpinnerModule, MatButton, MatPaginatorModule],
   templateUrl: './hero-table.html',
   styleUrl: './hero-table.scss',
-})
+  changeDetection: ChangeDetectionStrategy.OnPush
+  })
 export class HeroTable {
   data = input.required<HeroDTO[]>();
   isLoading = input.required<boolean>();

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component,
+  ChangeDetectionStrategy} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeroNavbar } from '../../components/hero-navbar/hero-navbar';
 
@@ -7,5 +8,6 @@ import { HeroNavbar } from '../../components/hero-navbar/hero-navbar';
   imports: [RouterOutlet, HeroNavbar],
   templateUrl: './hero-layout.html',
   styleUrl: './hero-layout.scss',
-})
+  changeDetection: ChangeDetectionStrategy.OnPush
+  })
 export default class HeroLayout {}

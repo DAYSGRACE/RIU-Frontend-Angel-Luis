@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject,
+  ChangeDetectionStrategy} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions, MatDialogClose,
@@ -12,7 +13,8 @@ import { ConfirmDialogData } from '../../interfaces/dialog-data.interface';
   selector: 'app-confirm-dialog',
   imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatDialogClose],
   templateUrl: './confirm-dialog.html',
-})
+  changeDetection: ChangeDetectionStrategy.OnPush
+  })
 export class ConfirmDialog {
   data = inject<ConfirmDialogData>(MAT_DIALOG_DATA);
 }

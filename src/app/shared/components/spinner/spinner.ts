@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject,
+  ChangeDetectionStrategy} from '@angular/core';
 import { LoadingService } from '../../../core/services/loading-service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
@@ -7,7 +8,8 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   imports: [MatProgressSpinner],
   templateUrl: './spinner.html',
   styleUrl: './spinner.css',
-})
+  changeDetection: ChangeDetectionStrategy.OnPush
+  })
 export class Spinner {
   loadingService = inject(LoadingService);
 }
