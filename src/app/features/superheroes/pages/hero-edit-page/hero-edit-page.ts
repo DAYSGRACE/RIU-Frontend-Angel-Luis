@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SuperHeroService } from '../../services/super-hero-service';
 import { HeroForm } from '../../components/hero-form/hero-form';
 import { HERO_FORM_TEMPLATE } from '../../configs/hero-form.config';

@@ -1,5 +1,11 @@
-import { Component, DestroyRef, effect, inject, signal,
-  ChangeDetectionStrategy} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { HeroFilter } from '../../components/hero-filter/hero-filter';
 import { HeroTable } from '../../components/hero-table/hero-table';
 import { SuperHeroService } from '../../services/super-hero-service';
@@ -17,13 +23,13 @@ import { PageEvent } from '@angular/material/paginator';
   imports: [HeroFilter, HeroTable],
   templateUrl: './hero-list-page.html',
   styleUrl: './hero-list-page.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
-  })
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
 export default class HeroListPage {
-  protected readonly columnsTable: ColumnTableData[] = COLUMNS_HERO_TABLE;
   public readonly queryToSearch = signal<string>('');
   public readonly pageIndex = signal<number>(0);
   public readonly pageSize = signal<number>(10);
+  protected readonly columnsTable: ColumnTableData[] = COLUMNS_HERO_TABLE;
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
   private readonly heroSvc = inject(SuperHeroService);

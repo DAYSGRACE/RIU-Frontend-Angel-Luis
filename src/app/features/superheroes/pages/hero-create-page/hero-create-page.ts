@@ -1,5 +1,4 @@
-import { Component, DestroyRef, inject,
-  ChangeDetectionStrategy} from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { HeroForm } from '../../components/hero-form/hero-form';
 import { HERO_FORM_TEMPLATE } from '../../configs/hero-form.config';
 import { HeroMapper } from '../../mappers/hero.mapper';
@@ -15,8 +14,8 @@ import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/conf
   imports: [HeroForm],
   templateUrl: './hero-create-page.html',
   styleUrl: './hero-create-page.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
-  })
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
 export default class HeroCreatePage {
   protected readonly heroFormTemplate = HERO_FORM_TEMPLATE;
   private readonly destroyRef = inject(DestroyRef);

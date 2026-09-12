@@ -36,14 +36,21 @@ export class SuperHeroService {
   }
 
   createHero(heroDTO: HeroDTOCreation): Observable<HeroDTO> {
-    return this.httpClient.post<HeroDTO>(`${this.URL_HEROES}`, heroDTO)
-      .pipe(catchError((err: HttpErrorResponse) => {
+    return this.httpClient.post<HeroDTO>(`${this.URL_HEROES}`, heroDTO).pipe(
+      catchError((err: HttpErrorResponse) => {
         if (err.status === 0) {
-          return throwError(() => new Error('No se logro crear el héroe, se perdio la conexión con el servidor, pruebe en otro momento'));
+          return throwError(
+            () =>
+              new Error(
+                'No se logro crear el héroe, se perdio la conexión con el servidor, pruebe en otro momento',
+              ),
+          );
         }
-        return throwError(() => new Error('No se logro crear el héroe, ocurrio un error inesperado'));
-      }))
-      ;
+        return throwError(
+          () => new Error('No se logro crear el héroe, ocurrio un error inesperado'),
+        );
+      }),
+    );
   }
 
   editHero(heroDTO: HeroDTOCreation, id: string): Observable<HeroDTO> {
