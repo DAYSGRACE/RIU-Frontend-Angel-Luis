@@ -1,19 +1,21 @@
 <form
-  (ngSubmit)="save()"
-  [formGroup]="form()"
-  class="flex flex-col max-w-200 mx-auto bg-[#232530] rounded-2xl py-16 px-1">
-
+  (submit)="save($event)"
+  class="flex flex-col max-w-200 mx-auto bg-[#232530] rounded-2xl py-16 px-1"
+>
   <section class="grid grid-cols-1">
-    @for (field of formTemplate(); track field.key) {
+    @for (field of formTemplate; track field.key) {
       <div class="w-full max-w-[80%] mx-auto">
 
         <mat-form-field class="w-full">
-          <mat-label>{{ field.label }}</mat-label>
+          <mat-label>
+            {{ field.label }}
+          </mat-label>
 
           <input
-            [formControlName]="field.key"
+            [formField]="getField(field.key)"
             [type]="field.type"
-            matInput>
+            matInput
+          />
 
           @if (getErrorMessage(field); as errorMessage) {
             <mat-error>
@@ -24,14 +26,14 @@
       </div>
     }
   </section>
-  <button [disabled]="!form().valid"
-          class="max-w-120 mx-auto bg-[#414558] w-full p-3"
-          color="primary"
-          mat-raised-button
 
+  <button
+    [disabled]="!form().valid()"
+    class="max-w-120 mx-auto bg-[#414558] w-full p-3"
+    color="primary"
+    mat-raised-button
+    type="submit"
   >
     Guardar
   </button>
-
-
 </form>

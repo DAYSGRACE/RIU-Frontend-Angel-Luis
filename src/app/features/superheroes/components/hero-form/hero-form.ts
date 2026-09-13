@@ -1,56 +1,60 @@
-import { ChangeDetectionStrategy, Component, computed, effect, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, linkedSignal, output } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
+import { Field, form, FormField } from '@angular/forms/signals';
 import { FormFieldInput } from '../../../../core/interfaces/generic-input-form.interface';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { HeroDTOCreation } from '../../interfaces/hero-dto.interface';
+import { HERO_FORM_TEMPLATE } from '../../configs/hero-form.config';
+import { createSchemaFromConfig } from '../../../../core/schema-builder.util';
 
 @Component({
   selector: 'app-hero-form',
-  imports: [MatFormFieldModule, MatInputModule, MatButton, ReactiveFormsModule],
+  imports: [MatFormFieldModule, MatInputModule, MatButton, FormField],
   templateUrl: './hero-form.html',
   styleUrl: './hero-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroForm {
-  formTemplate = input.required<FormFieldInput[]>();
-  initialValue = input<Record<string, unknown>>({});
+  initialValue = input<HeroDTOCreation>();
+  formSubmitted = output<HeroDTOCreation>();
 
-  formSubmitted = output<{ [key: string]: unknown }>();
+  protected readonly formTemplate = HERO_FORM_TEMPLATE;
 
-  form = computed(() => {
-    const controls: Record<string, FormControl> = {};
-
-    for (const field of this.formTemplate()) {
-      controls[field.key] = new FormControl('', field.validators ?? []);
-    }
-    return new FormGroup(controls);
+  protected readonly model = linkedSignal<HeroDTOCreation>(() => {
+    return (
+      this.initialValue() ?? {
+        name: '',
+        realName: '',
+        power: 0,
+        intelligence: 0,
+        universe: '',
+      }
+    );
   });
 
-  constructor() {
-    effect(() => {
-      const value = this.initialValue();
+  protected readonly form = form(this.model, createSchemaFromConfig(this.formTemplate));
 
-      if (value) {
-        this.form().patchValue(value);
-      }
-    });
+  save(event: SubmitEvent) {
+    event.preventDefault();
+    if (!this.form().valid()) {
+      return;
+    }
+
+    this.formSubmitted.emit(this.model());
   }
 
-  getErrorMessage(field: FormFieldInput): string {
-    const errors = this.form().get(field.key)?.errors;
+  protected getErrorMessage(field: FormFieldInput<HeroDTOCreation>): string {
+    const fieldErrors = this.getField(field.key)().errors();
 
-    if (!errors || !field.errors) {
+    if (!fieldErrors.length) {
       return '';
     }
 
-    const firstError = Object.keys(errors)[0];
-
-    return field.errors[firstError] ?? '';
+    return fieldErrors[0].message ?? '';
   }
 
-  save() {
-    if (!this.form().valid) return;
-    this.formSubmitted.emit(this.form().getRawValue());
+  protected getField(key: keyof HeroDTOCreation): Field<string | number> {
+    return this.form[key];
   }
 }

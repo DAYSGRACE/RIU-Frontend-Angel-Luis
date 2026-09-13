@@ -1,57 +1,52 @@
-import { Validators } from '@angular/forms';
 import { FormFieldInput } from '../../../core/interfaces/generic-input-form.interface';
+import { HeroDTOCreation } from '../interfaces/hero-dto.interface';
 
-export const HERO_FORM_TEMPLATE: FormFieldInput[] = [
+export const HERO_FORM_TEMPLATE: FormFieldInput<HeroDTOCreation>[] = [
   {
     key: 'name',
     label: 'Nombre',
     type: 'text',
-    validators: [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
-    errors: {
+    rules: {
       required: 'El nombre es obligatorio.',
-      minlength: 'El nombre debe tener al menos 2 caracteres.',
-      maxlength: 'El nombre no debe tener más de 100 caracteres.',
+      minLength: { value: 2, message: 'El nombre debe tener al menos 2 caracteres.' },
+      maxLength: { value: 100, message: 'El nombre no debe tener más de 100 caracteres.' },
     },
   },
   {
     key: 'realName',
     label: 'Nombre real',
     type: 'text',
-    validators: [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
-    errors: {
+    rules: {
       required: 'El nombre real es obligatorio.',
-      minlength: 'El nombre real debe tener al menos 2 caracteres.',
-      maxlength: 'El nombre real no debe tener más de 100 caracteres.',
+      minLength: { value: 2, message: 'El nombre real debe tener al menos 2 caracteres.' },
+      maxLength: { value: 100, message: 'El nombre real no debe tener más de 100 caracteres.' },
     },
   },
   {
     key: 'power',
     label: 'Poder',
     type: 'number',
-    validators: [Validators.required, Validators.min(1)],
-    errors: {
+    rules: {
       required: 'El poder es obligatorio.',
-      min: 'El poder debe ser mayor que 0.',
+      min: { value: 1, message: 'El poder debe ser mayor que 0.' },
     },
   },
   {
     key: 'intelligence',
     label: 'Inteligencia',
     type: 'number',
-    validators: [Validators.required, Validators.min(0)],
-    errors: {
+    rules: {
       required: 'La inteligencia es obligatoria.',
-      min: 'La inteligencia no puede ser negativa.',
+      min: { value: 0, message: 'La inteligencia no puede ser negativa.' },
     },
   },
   {
     key: 'universe',
     label: 'Universo',
     type: 'text',
-    validators: [Validators.required, Validators.minLength(1)],
-    errors: {
+    rules: {
       required: 'El universo es obligatorio.',
-      minlength: 'El universo debe tener al menos 1 caracter.',
+      minLength: { value: 1, message: 'El universo debe tener al menos 1 caracter.' },
     },
   },
 ];
