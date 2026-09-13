@@ -1,37 +1,110 @@
 <form
   (submit)="save($event)"
-  class="flex flex-col max-w-200 mx-auto bg-[#232530] rounded-2xl py-16 px-1"
+  class="flex flex-col w-full max-w-200 mx-auto bg-[#232530] rounded-2xl py-8 sm:py-16 px-4 sm:px-6"
 >
-  <section class="grid grid-cols-1">
-    @for (field of formTemplate; track field.key) {
-      <div class="w-full max-w-[80%] mx-auto">
+  <section class="flex flex-col gap-3">
 
-        <mat-form-field class="w-full">
-          <mat-label>
-            {{ field.label }}
-          </mat-label>
 
-          <input
-            [formField]="getField(field.key)"
-            [type]="field.type"
-            matInput
-          />
+    <mat-form-field
+      appearance="outline"
+      class="w-[90%] sm:w-[80%] mx-auto"
+    >
+      <mat-label>Nombre</mat-label>
 
-          @if (getErrorMessage(field); as errorMessage) {
-            <mat-error>
-              {{ errorMessage }}
-            </mat-error>
-          }
-        </mat-form-field>
-      </div>
-    }
+      <input
+        [formField]="form.name"
+        matInput
+        type="text"
+      />
+
+      @if (form.name().touched() && form.name().invalid()) {
+        <mat-error>
+          {{ form.name().errors()[0].message }}
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="w-[90%] sm:w-[80%] mx-auto"
+    >
+      <mat-label>Nombre real</mat-label>
+
+      <input
+        [formField]="form.realName"
+        matInput
+        type="text"
+      />
+
+      @if (form.realName().touched() && form.realName().invalid()) {
+        <mat-error>
+          {{ form.realName().errors()[0].message }}
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="w-[90%] sm:w-[80%] mx-auto"
+    >
+      <mat-label>Poder</mat-label>
+
+      <input
+        [formField]="form.power"
+        matInput
+        type="number"
+      />
+
+      @if (form.power().touched() && form.power().invalid()) {
+        <mat-error>
+          {{ form.power().errors()[0].message }}
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="w-[90%] sm:w-[80%] mx-auto"
+    >
+      <mat-label>Inteligencia</mat-label>
+
+      <input
+        [formField]="form.intelligence"
+        matInput
+        type="number"
+      />
+
+      @if (form.intelligence().touched() && form.intelligence().invalid()) {
+        <mat-error>
+          {{ form.intelligence().errors()[0].message }}
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="w-[90%] sm:w-[80%] mx-auto"
+    >
+      <mat-label>Universo</mat-label>
+
+      <input
+        [formField]="form.universe"
+        matInput
+        type="text"
+      />
+
+      @if (form.universe().touched() && form.universe().invalid()) {
+        <mat-error>
+          {{ form.universe().errors()[0].message }}
+        </mat-error>
+      }
+    </mat-form-field>
   </section>
 
   <button
     [disabled]="!form().valid()"
-    class="max-w-120 mx-auto bg-[#414558] w-full p-3"
-    color="primary"
-    mat-raised-button
+    class="w-[90%] sm:w-[80%] mx-auto"
+    mat-flat-button
     type="submit"
   >
     Guardar

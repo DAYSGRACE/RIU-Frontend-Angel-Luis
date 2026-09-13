@@ -24,9 +24,7 @@ export default class HeroEditPage {
   private readonly heroSvc = inject(SuperHeroService);
   private readonly dialog = inject(MatDialog);
 
-  private readonly heroDataDTO: HeroDTO = (this.route.snapshot.data as HeroRouteData).hero;
-
-  protected readonly heroData = this.heroDataDTO as HeroDTOCreation;
+  protected readonly heroDataDTO: HeroDTO = (this.route.snapshot.data as HeroRouteData).hero;
 
   openDialogToConfirmEdit(hero: any) {
     const dialogRef = this.dialog.open(ConfirmDialog, {
@@ -45,9 +43,8 @@ export default class HeroEditPage {
       });
   }
 
-  editHero(hero: any) {
-    const heroModified = HeroMapper.toDTOCreation(hero);
-    this.heroSvc.editHero(heroModified, this.heroDataDTO.id).subscribe({
+  editHero(hero: HeroDTOCreation) {
+    this.heroSvc.editHero(hero, this.heroDataDTO.id).subscribe({
       next: () => {
         const dialogRef = this.dialog.open(MessageDialog, {
           data: {

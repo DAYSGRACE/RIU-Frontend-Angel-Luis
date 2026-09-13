@@ -5,7 +5,7 @@ import {
   PaginationResponseDTO,
 } from '../../../core/interfaces/http-pagination.interface';
 import { HeroDTO, HeroDTOCreation } from '../interfaces/hero-dto.interface';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 
 @Service()
 export class SuperHeroService {
@@ -87,5 +87,13 @@ export class SuperHeroService {
         );
       }),
     );
+  }
+
+  checkNameIfIsUsed(name: string, excludedId?: string): Observable<boolean> {
+    const params = new HttpParams().set('name:eq', name.trim());
+
+    return this.httpClient
+      .get<HeroDTO[]>(this.URL_HEROES, { params })
+      .pipe(map((heroes) => heroes.some((hero) => hero.id !== excludedId)));
   }
 }
