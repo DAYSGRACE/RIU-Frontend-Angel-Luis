@@ -36,10 +36,8 @@
       </td>
     </ng-container>
 
-
     <tr *matHeaderRowDef="displayedColumns()" mat-header-row></tr>
     <tr *matRowDef="let row; columns: displayedColumns();" mat-row></tr>
-
 
     <tr *matNoDataRow class="mat-row">
       <td [attr.colspan]="displayedColumns().length" class="mat-cell">
@@ -49,11 +47,27 @@
 
   </table>
 
-  <mat-paginator
-    (page)="pageChange.emit($event)"
-    [length]="totalElements()"
-    [pageIndex]="pageIndex()"
-    [pageSizeOptions]="[5, 10, 20]"
-    [pageSize]="pageSize()">
-  </mat-paginator>
+  <div class="flex items-center justify-end gap-4 mt-2">
+    <mat-form-field appearance="outline" class="w-28 text-xs" subscriptSizing="dynamic">
+      <mat-label >Ir a pág.</mat-label>
+      <input
+        matInput
+        type="number"
+        min="1"
+        [max]="paginator.getNumberOfPages()"
+        [value]="pageIndex() + 1"
+        (change)="onPageJump($event)" />
+    </mat-form-field>
+
+    <mat-paginator
+      #paginator
+      (page)="pageChange.emit($event)"
+      [length]="totalElements()"
+      [pageIndex]="pageIndex()"
+      [pageSizeOptions]="[5, 10, 20]"
+      [pageSize]="pageSize()"
+      [showFirstLastButtons]="true"
+    >
+    </mat-paginator>
+  </div>
 </div>
