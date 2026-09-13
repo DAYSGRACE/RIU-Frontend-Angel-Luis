@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MessageDialog } from '../../../../shared/components/message-dialog/message-dialog';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { HeroDTOCreation } from '../../interfaces/hero-dto.interface';
 
 @Component({
   selector: 'app-hero-create-page',
@@ -20,9 +21,8 @@ export default class HeroCreatePage {
   private readonly heroSvc = inject(SuperHeroService);
   private readonly dialog = inject(MatDialog);
 
-  createHero(formData: any): void {
-    const heroDTOCreation = HeroMapper.toDTOCreation(formData);
-    this.heroSvc.createHero(heroDTOCreation).subscribe({
+  createHero(formData: HeroDTOCreation): void {
+    this.heroSvc.createHero(formData).subscribe({
       next: (_data) => {
         const dialogRef = this.dialog.open(MessageDialog, {
           data: {
