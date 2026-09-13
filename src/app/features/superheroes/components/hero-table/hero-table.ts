@@ -1,19 +1,37 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  output,
+  ViewChild,
+} from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { HeroDTO } from '../../interfaces/hero-dto.interface';
 import { ColumnTableData } from '../../interfaces/column-table-data.interface';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButton } from '@angular/material/button';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'hero-table',
-  imports: [MatTableModule, MatProgressSpinnerModule, MatButton, MatPaginatorModule],
+  imports: [
+    MatTableModule,
+    MatProgressSpinnerModule,
+    MatButton,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './hero-table.html',
   styleUrl: './hero-table.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroTable {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   data = input.required<HeroDTO[]>();
   isLoading = input.required<boolean>();
   columns = input.required<ColumnTableData[]>();
@@ -39,4 +57,24 @@ export class HeroTable {
       ? `No hay datos para la búsqueda de "${this.currentQuery()}"`
       : 'No hay datos';
   });
+
+  onPageJump(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const targetPage = Number(inputElement.value) - 1;
+
+    if (!this.paginator) return;
+
+    const totalPages = this.paginator.getNumberOfPages();
+
+    if (targetPage >= 0 && targetPage < totalPages) {
+      this.pageChange.emit({
+        pageIndex: targetPage,
+        pageSize: this.pageSize(),
+        length: this.totalElements(),
+        previousPageIndex: this.pageIndex(),
+      });
+    } else {
+      inputElement.value = (this.pageIndex() + 1).toString();
+    }
+  }
 }
