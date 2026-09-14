@@ -39,7 +39,7 @@ export class HeroForm {
   initialValue = input<HeroDTO>();
 
   formSubmitted = output<HeroDTOCreation>();
-  protected readonly model = linkedSignal<HeroDTOCreation>(
+  readonly model = linkedSignal<HeroDTOCreation>(
     () =>
       this.initialValue() ?? {
         name: '',

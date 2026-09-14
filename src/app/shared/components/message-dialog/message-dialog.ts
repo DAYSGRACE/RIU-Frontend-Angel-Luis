@@ -13,7 +13,6 @@ import { ConfirmDialogData } from '../../interfaces/dialog-data.interface';
   selector: 'app-message-dialog',
   imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatButton, MatDialogClose],
   templateUrl: './message-dialog.html',
-  styleUrl: './message-dialog.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MessageDialog {

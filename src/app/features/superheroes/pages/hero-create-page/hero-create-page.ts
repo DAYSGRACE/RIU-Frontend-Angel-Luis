@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { HeroForm } from '../../components/hero-form/hero-form';
-import { HeroMapper } from '../../mappers/hero.mapper';
 import { SuperHeroService } from '../../services/super-hero-service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageDialog } from '../../../../shared/components/message-dialog/message-dialog';

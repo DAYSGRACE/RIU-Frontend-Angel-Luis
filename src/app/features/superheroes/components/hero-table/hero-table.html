@@ -49,14 +49,14 @@
 
   <div class="flex items-center justify-end gap-4 mt-2">
     <mat-form-field appearance="outline" class="w-28 text-xs" subscriptSizing="dynamic">
-      <mat-label >Ir a pág.</mat-label>
+      <mat-label>Ir a pág.</mat-label>
       <input
-        matInput
-        type="number"
-        min="1"
+        (change)="onPageJump($event)"
         [max]="paginator.getNumberOfPages()"
         [value]="pageIndex() + 1"
-        (change)="onPageJump($event)" />
+        matInput
+        min="1"
+        type="number" />
     </mat-form-field>
 
     <mat-paginator
