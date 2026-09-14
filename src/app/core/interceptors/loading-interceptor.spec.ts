@@ -1,4 +1,4 @@
-import { HttpHandlerFn, HttpRequest, HttpEvent } from '@angular/common/http';
+import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { LoadingService } from '../services/loading-service';

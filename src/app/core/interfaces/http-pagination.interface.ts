@@ -4,9 +4,7 @@ export interface PaginationRequestDTO {
   sort: PaginationSortRequestDTO;
 }
 
-export interface PaginationSortRequestDTO {
-  [propName: string]: SortRequestType;
-}
+export type PaginationSortRequestDTO = Record<string, SortRequestType>;
 
 export type SortRequestType = '+' | '-';
 

@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 import { of, throwError } from 'rxjs';
 import { HeroForm } from './hero-form';
@@ -407,6 +407,5 @@ describe('Formulario de héroe', () => {
         errors().some((error) => error.textContent?.includes('El nombre ya está en uso')),
       ).toBe(false);
     });
-
   });
 });

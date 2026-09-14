@@ -22,7 +22,7 @@ export default class HeroCreatePage {
 
   createHero(formData: HeroDTOCreation): void {
     this.heroSvc.createHero(formData).subscribe({
-      next: (_data) => {
+      next: () => {
         const dialogRef = this.dialog.open(MessageDialog, {
           data: {
             title: 'Éxito',
