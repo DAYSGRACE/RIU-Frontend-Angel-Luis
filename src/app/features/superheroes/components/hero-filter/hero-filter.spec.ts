@@ -5,6 +5,7 @@ import { HeroFilter } from './hero-filter';
 describe('HeroFilter', () => {
   let component: HeroFilter;
   let fixture: ComponentFixture<HeroFilter>;
+  let input: HTMLInputElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -18,6 +19,12 @@ describe('HeroFilter', () => {
 
     fixture.detectChanges();
     await fixture.whenStable();
+
+    input = fixture.nativeElement.querySelector('input');
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('Debería ser creado', () => {
@@ -30,35 +37,152 @@ describe('HeroFilter', () => {
     expect(label.textContent).toContain('Buscar héroe');
   });
 
-  it('Debería emitir la query despues del tiempo de retraso', () => {
-    vi.useFakeTimers();
+  describe('Entrada de texto', () => {
+    it('No debería emitir la query antes de que finalice el debounce', () => {
+      vi.useFakeTimers();
 
-    const spy = vi.spyOn(component.query, 'emit');
+      const spy = vi.spyOn(component.query, 'emit');
 
-    component.onInput('Batman');
+      input.value = 'Batman';
+      input.dispatchEvent(new Event('input'));
 
-    vi.advanceTimersByTime(500);
+      fixture.detectChanges();
 
-    expect(spy).toHaveBeenCalledWith('Batman');
+      vi.advanceTimersByTime(499);
 
-    vi.useRealTimers();
+      expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('Debería emitir la query después del tiempo de debounce', () => {
+      vi.useFakeTimers();
+
+      const spy = vi.spyOn(component.query, 'emit');
+
+      input.value = 'Batman';
+      input.dispatchEvent(new Event('input'));
+
+      fixture.detectChanges();
+
+      vi.advanceTimersByTime(500);
+
+      expect(spy).toHaveBeenCalledOnce();
+      expect(spy).toHaveBeenCalledWith('Batman');
+    });
+
+    it('No debería emitir valores consecutivos iguales', () => {
+      vi.useFakeTimers();
+
+      const spy = vi.spyOn(component.query, 'emit');
+
+      input.value = 'Batman';
+      input.dispatchEvent(new Event('input'));
+
+      fixture.detectChanges();
+      vi.advanceTimersByTime(500);
+
+      input.value = 'Batman';
+      input.dispatchEvent(new Event('input'));
+
+      fixture.detectChanges();
+      vi.advanceTimersByTime(500);
+
+      expect(spy).toHaveBeenCalledOnce();
+      expect(spy).toHaveBeenCalledWith('Batman');
+    });
+
+    it('Debería emitir nuevamente cuando la query cambia', () => {
+      vi.useFakeTimers();
+
+      const spy = vi.spyOn(component.query, 'emit');
+
+      input.value = 'Batman';
+      input.dispatchEvent(new Event('input'));
+
+      fixture.detectChanges();
+      vi.advanceTimersByTime(500);
+
+      input.value = 'Superman';
+      input.dispatchEvent(new Event('input'));
+
+      fixture.detectChanges();
+      vi.advanceTimersByTime(500);
+
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenNthCalledWith(1, 'Batman');
+      expect(spy).toHaveBeenNthCalledWith(2, 'Superman');
+    });
+
+    it('Debería respetar el debounceMs configurado', () => {
+      vi.useFakeTimers();
+
+      const customFixture = TestBed.createComponent(HeroFilter);
+      const customComponent = customFixture.componentInstance;
+
+      customFixture.componentRef.setInput('labelInput', 'Buscar héroe');
+      customFixture.componentRef.setInput('debounceMs', 1000);
+
+      customFixture.detectChanges();
+
+      const input = customFixture.nativeElement.querySelector('input') as HTMLInputElement;
+
+      const spy = vi.spyOn(customComponent.query, 'emit');
+
+      input.value = 'Batman';
+      input.dispatchEvent(new Event('input'));
+
+      vi.advanceTimersByTime(500);
+
+      expect(spy).not.toHaveBeenCalled();
+
+      vi.advanceTimersByTime(500);
+
+      expect(spy).toHaveBeenCalledOnce();
+      expect(spy).toHaveBeenCalledWith('Batman');
+
+      customFixture.destroy();
+    });
+
+    it('Debería emitir solamente el último valor cuando se escriben varios valores durante el debounce', () => {
+      vi.useFakeTimers();
+
+      const spy = vi.spyOn(component.query, 'emit');
+
+      input.value = 'B';
+      input.dispatchEvent(new Event('input'));
+
+      vi.advanceTimersByTime(100);
+
+      input.value = 'Ba';
+      input.dispatchEvent(new Event('input'));
+
+      vi.advanceTimersByTime(100);
+
+      input.value = 'Bat';
+      input.dispatchEvent(new Event('input'));
+
+      vi.advanceTimersByTime(500);
+
+      expect(spy).toHaveBeenCalledOnce();
+      expect(spy).toHaveBeenCalledWith('Bat');
+    });
   });
 
-  it('No debería emitir valores repetidos', () => {
-    vi.useFakeTimers();
+  describe('Destrucción', () => {
+    it('No debería emitir una query pendiente después de destruirse', () => {
+      vi.useFakeTimers();
 
-    const spy = vi.spyOn(component.query, 'emit');
+      const spy = vi.spyOn(component.query, 'emit');
 
-    component.onInput('Batman');
+      input.value = 'Batman';
+      input.dispatchEvent(new Event('input'));
 
-    vi.advanceTimersByTime(500);
+      fixture.detectChanges();
 
-    component.onInput('Batman');
+      fixture.destroy();
 
-    vi.advanceTimersByTime(500);
+      vi.advanceTimersByTime(500);
 
-    expect(spy).toHaveBeenCalledTimes(1);
-
-    vi.useRealTimers();
+      expect(spy).not.toHaveBeenCalled();
+    });
   });
 });

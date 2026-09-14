@@ -5,7 +5,6 @@ import { SuperHeroService } from '../../services/super-hero-service';
 import { HeroForm } from '../../components/hero-form/hero-form';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
-import { HeroMapper } from '../../mappers/hero.mapper';
 import { MessageDialog } from '../../../../shared/components/message-dialog/message-dialog';
 import { HeroDTO, HeroDTOCreation } from '../../interfaces/hero-dto.interface';
 import { HeroRouteData } from '../../interfaces/HeroRouteData';
@@ -20,13 +19,12 @@ import { HeroRouteData } from '../../interfaces/HeroRouteData';
 export default class HeroEditPage {
   private readonly destroyRef = inject(DestroyRef);
   private readonly route = inject(ActivatedRoute);
+  protected readonly heroDataDTO: HeroDTO = (this.route.snapshot.data as HeroRouteData).hero;
   private readonly router = inject(Router);
   private readonly heroSvc = inject(SuperHeroService);
   private readonly dialog = inject(MatDialog);
 
-  protected readonly heroDataDTO: HeroDTO = (this.route.snapshot.data as HeroRouteData).hero;
-
-  openDialogToConfirmEdit(hero: any) {
+  openDialogToConfirmEdit(hero: HeroDTOCreation) {
     const dialogRef = this.dialog.open(ConfirmDialog, {
       data: {
         title: 'Edición de héroe',
