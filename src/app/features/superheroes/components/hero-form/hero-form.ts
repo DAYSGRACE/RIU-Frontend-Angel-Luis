@@ -130,7 +130,10 @@ export class HeroForm {
         return undefined;
       },
 
-      onError: () => undefined,
+      onError: () => ({
+        kind: 'serverError',
+        message: 'No verificable por el momento',
+      }),
     });
   });
 
